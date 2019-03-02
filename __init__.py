@@ -1,2 +1,2 @@
 
-from .tqueue import TurnQueue, Ticket, __all__
+from .tqueue import TurnQueue, Ticket, __all__  # noqa: F401
