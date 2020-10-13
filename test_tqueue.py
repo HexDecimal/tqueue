@@ -40,9 +40,16 @@ def test_calls() -> None:
     lst = []
     scheduler = tqueue.TurnQueue()
     CallFunc(scheduler, 3, lambda: lst.append(3))
-    CallFunc(scheduler, 2, lambda: lst.append(2))
+    func2 = CallFunc(scheduler, 2, lambda: lst.append(2))
     CallFunc(scheduler, 1, lambda: lst.append(1))
     CallFunc(scheduler, 4, lambda: lst.append(4))
+
+    print(scheduler)
+    scheduler.next()
+    assert func2.sched_time_passed == 1
+    assert func2.sched_time_left == 1
+    assert func2.sched_progress == 0.5
+
     while scheduler:
         print(scheduler)
         scheduler.next()

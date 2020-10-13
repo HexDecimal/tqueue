@@ -229,11 +229,31 @@ class Schedulable:
         The `ticket` parameter is the same object as `self.sched_ticket`, but
         with a more strict type hint.
 
-        `ticket.time - ticket.insert_time` can be used to get the delta time
-        of this Ticket.
+        `self.sched_time_passed` can be used to get the delta time of this
+        Ticket.
         """
         raise NotImplementedError(
             "Must be overridden by subclasses, see docstring for more info."
+        )
+
+    @property
+    def sched_time_passed(self) -> int:
+        """The amount of time passed since this object was last scheduled."""
+        assert self.sched_ticket
+        return self.sched_queue.time - self.sched_ticket.insert_time
+
+    @property
+    def sched_time_left(self) -> int:
+        """The amount of time until this scheduled object is triggered."""
+        assert self.sched_ticket
+        return self.sched_ticket.time - self.sched_queue.time
+
+    @property
+    def sched_progress(self) -> float:
+        """The progress of the last scheduled action.  From 0 to 1."""
+        assert self.sched_ticket
+        return self.sched_time_passed / (
+            self.sched_ticket.time - self.sched_ticket.insert_time
         )
 
 
