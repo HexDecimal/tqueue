@@ -16,7 +16,7 @@ class CallFunc(tqueue.Schedulable):
         self.func = func
         self.sched_schedule(interval)
 
-    def sched_on_turn(self) -> None:
+    def sched_on_turn(self, ticket: tqueue.Ticket) -> None:
         self.func()
         self.sched_ticket = None
 
@@ -29,10 +29,10 @@ class Actor(tqueue.Schedulable):
         self.speed = speed
         self.sched_schedule(speed)
 
-    def sched_on_turn(self) -> None:
-        assert self.sched_queue.time == self.sched_ticket.time
-        delta_time = self.sched_queue.time - self.sched_ticket.insert_time
-        assert delta_time == self.speed
+    def sched_on_turn(self, ticket: tqueue.Ticket) -> None:
+        assert self.sched_ticket
+        assert self.sched_queue.time == self.sched_ticket.time == ticket.time
+        assert self.speed == ticket.time - ticket.insert_time, "delta time"
         self.sched_reschedule(self.speed)
 
 

@@ -112,7 +112,7 @@ class TurnQueue:
         """
         next_ticket = self.peek()
         self.time, _, actor, _ = next_ticket
-        actor.sched_on_turn()
+        actor.sched_on_turn(next_ticket)
         if actor.sched_ticket is next_ticket:
             raise RuntimeError(
                 f"Schedulable object {actor} did not update its schedule."
@@ -215,7 +215,7 @@ class Schedulable:
         self.sched_ticket = self.__new_ticket(self.sched_queue.time + interval)
         heapq.heapreplace(self.sched_queue.heap, self.sched_ticket)
 
-    def sched_on_turn(self) -> None:
+    def sched_on_turn(self, ticket: Ticket) -> None:
         """Called on this objects turn.
         Needs to be overridden by subclasses.
 
@@ -226,9 +226,11 @@ class Schedulable:
         function begins.  If it is still True when this function returns then
         an error will be raised.
 
-        Also `self.sched_ticket` can't be `None` if this function was called.
-        `self.sched_queue.time - self.sched_ticket.insert_time` can be used
-        to get the delta time of a Ticket.
+        The `ticket` parameter is the same object as `self.sched_ticket`, but
+        with a more strict type hint.
+
+        `ticket.time - ticket.insert_time` can be used to get the delta time
+        of this Ticket.
         """
         raise NotImplementedError(
             "Must be overridden by subclasses, see docstring for more info."
