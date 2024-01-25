@@ -1,8 +1,65 @@
-[tool.black]
-line-length = 79
-target-version = ["py37"]
+[project]
+name = "tqueue"
+readme = "README.md"
+license = { file = "LICENSE" }
+dynamic = ["version", "description"]
+requires-python = ">=3.8"
 
-[tool.isort]
-py_version = 37
-line_length = 79
-profile = "black"
+[tool.mypy] # https://mypy.readthedocs.io/en/stable/config_file.html
+files = "."
+exclude = ['^build/', '^\.']
+explicit_package_bases = true
+python_version = "3.8"
+warn_unused_configs = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+strict_equality = true
+
+[tool.ruff] # https://docs.astral.sh/ruff/rules/
+select = [
+    "C90", # mccabe
+    "E",   # pycodestyle
+    "W",   # pycodestyle
+    "F",   # Pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "YTT", # flake8-2020
+    "ANN", # flake8-annotations
+    "S",   # flake8-bandit
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "EM",  # flake8-errmsg
+    "EXE", # flake8-executable
+    "RET", # flake8-return
+    "ICN", # flake8-import-conventions
+    "PIE", # flake8-pie
+    "PT",  # flake8-pytest-style
+    "SIM", # flake8-simplify
+    "PTH", # flake8-use-pathlib
+    "PL",  # Pylint
+    "TRY", # tryceratops
+    "RUF", # NumPy-specific rules
+    "G",   # flake8-logging-format
+    "D",   # pydocstyle
+]
+ignore = [
+    "E501",   # line-too-long
+    "S101",   # assert
+    "ANN101", # missing-type-self
+    "ANN102", # missing-type-cls
+]
+line-length = 79
+
+[tool.ruff.pydocstyle]
+convention = "google" # Use Google-style docstrings
