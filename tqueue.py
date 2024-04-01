@@ -27,6 +27,7 @@
 See the queued turns time system:
 http://www.roguebasin.com/index.php?title=Time_Systems#Queued_turns
 """
+
 from __future__ import annotations
 
 __all__ = (
@@ -121,9 +122,4 @@ class TurnQueue(Generic[T]):
 
     def __repr__(self) -> str:
         """A string representation of this instance, including all tickets."""
-        return "{}(time={!r}, next_uid={!r}, heap={!r})".format(
-            self.__class__.__name__,
-            self.time,
-            self.next_uid,
-            self.heap,
-        )
+        return f"{self.__class__.__name__}(time={self.time!r}, next_uid={self.next_uid!r}, heap={self.heap!r})"
